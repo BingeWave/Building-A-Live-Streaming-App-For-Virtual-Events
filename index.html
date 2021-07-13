@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Bootstrap 5 CDN-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <!-- The Script For Embedding BW Widges -->
+    <script type="text/javascript" src="https://connect.bingewave.com/connect.js"></script>
+
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="text-center">Basic Event Application</h1>
+
+        <div class="row">
+
+            <div class="col-sm-4">
+                <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-white" style="width: 380px;">
+                    <a href="/"
+                        class="d-flex align-items-center flex-shrink-0 p-3 link-dark text-decoration-none border-bottom">
+                        <svg class="bi me-2" width="30" height="24">
+                            <use xlink:href="#bootstrap"></use>
+                        </svg>
+                        <span class="fs-5 fw-semibold textt-center">My Events</span>
+                    </a>
+                    <div id="eventList" class="list-group list-group-flush border-bottom scrollarea">
+                        <!-- Empty menu thaT will be populated by the events we create-->
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-sm-8" id="mainContent">
+                <!-- Empty container that we will dynamically insert our date-->
+            </div>
+
+        </div>
+    </div>
+
+
+
+</body>
+<script type="text/javascript">
+
+    //Replace with your authentication token to test
+    const auth_token = '';
+
+    //Enter a distributor id. You can find one of yours at https://developers.bingewave.com/queries/distributors#list
+    const distributor_id = '';
+
+    var eventList = null;
+
+    var mainContent = null;
+
+    //The function to start the program
+    function init() {
+
+        //console.log(BingewaveConnector.parseTags());
+        eventList = document.getElementById('eventList');
+
+        mainContent = document.getElementById('mainContent');
+
+        getAllEvents();
+    }
+
+    /**
+     * Retrieving al the events and inputing them into a template
+     * 
+     * @Reference https://developers.bingewave.com/docs/events#list
+     * @Reference https://developers.bingewave.com/queries/events#list
+     * 
+     **/
+    function getAllEvents() {
+
+        let url = 'https://bw.bingewave.com/events?distributor_id=' + distributor_id;
+
+        const request = new Request(url, {
+            method: 'GET',
+            headers: new Headers({
+                "Authorization": auth_token,
+                "Content-Type": "application/json"
+            }),
+            body: null
+        });
+
+        fetch(request)
+            .then((response) => {
+                if (!response.ok) { // Don't forget this part!
+                    throw new Error(`HTTP error ${response.status}`);
+                }
+
+                return response.json();
+            })
+            .then((responseData) => {
+
+                if(responseData.status == 'success'){
+                    
+                    responseData.data.forEach(event => {
+
+                        let template = `<a href="#" onclick="displaySingleEvent(event, '${event.id}')" class="list-group-item list-group-item-action py-3 lh-tight"
+                            aria-current="true">
+                            <div class="d-flex w-100 align-items-center justify-content-between">
+                                <strong class="mb-1">${event.title}</strong>
+                                <small>${event.date}</small>
+                            </div>
+                            <div class="col-10 mb-1 small">${event.description}</div>
+                        </a>`;
+
+                        eventList.insertAdjacentHTML('beforeend',template);
+                    });
+                }
+
+            })
+            .then(() => {
+
+            }).catch(function (error) {
+                console.log(error);
+            });
+
+    }
+
+    /**
+     * Retrieves a single event by is id, and places the
+     * streaming tag on the page
+     * 
+     * @Reference https://developers.bingewave.com/docs/events#view
+     * @Reference https://developers.bingewave.com/queries/events#view
+     * 
+     * */
+    function displaySingleEvent(event, id) {
+
+        if(event){
+            event.preventDefault();
+        }
+
+        mainContent.innerHTML = '';
+
+        let url = 'https://bw.bingewave.com/events/' + id;
+
+        const request = new Request(url, {
+            method: 'GET',
+            headers: new Headers({
+                "Authorization": auth_token,
+                "Content-Type": "application/json"
+            }),
+            body: null
+        });
+
+        fetch(request)
+            .then((response) => {
+                if (!response.ok) { // Don't forget this part!
+                    throw new Error(`HTTP error ${response.status}`);
+                }
+
+                return response.json();
+            })
+            .then((responseData) => {
+
+               if(responseData.status == 'success'){
+
+                let data = responseData.data;
+
+                let template = `
+                    <div class="p-5 mb-4 bg-light rounded-3">
+                        <div class="container-fluid py-5">
+                            <h1 class="display-5 fw-bold">${data.title}</h1>
+                            <p class="col-md-8 fs-4">${data.description}</p>
+                            
+                        </div>
+                    </div>
+                    ${data.embed_video_chat}
+                `;
+
+                mainContent.insertAdjacentHTML('beforeend',template);
+
+                //Because the widget tag is dynamically inserted,
+                //we have to call the parseTags, which is a function include
+                //from script tag at https://connect.bingewave.com/connect.js
+                BingewaveConnector.parseTags();
+
+               }
+
+            })
+            .then(() => {
+
+            }).catch(function (error) {
+                console.log(error);
+            });
+    }
+
+    init();
+
+</script>
+
+</html>
