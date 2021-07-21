@@ -8,7 +8,9 @@
 
     <!-- The Script For Embedding BW Widges -->
     <script type="text/javascript" src="https://connect.bingewave.com/connect.js"></script>
-
+    <script type="text/javascript">
+        BingewaveConnector.init();
+    </script>
 </head>
 
 <body>
@@ -58,7 +60,6 @@
     //The function to start the program
     function init() {
 
-        //console.log(BingewaveConnector.parseTags());
         eventList = document.getElementById('eventList');
 
         mainContent = document.getElementById('mainContent');
