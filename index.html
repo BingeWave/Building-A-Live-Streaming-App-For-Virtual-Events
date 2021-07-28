@@ -15,23 +15,22 @@
 
 <body>
     <div class="container">
-        <h1 class="text-center">Basic Event Application</h1>
+        
+        <div class="card card-body bg-light">
+            <h1 class="text-center">Basic Event Application</h1>
+        </div>
 
-        <div class="row">
+        <div class="row mt-2">
 
             <div class="col-sm-4">
-                <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-white" style="width: 380px;">
-                    <a href="/"
-                        class="d-flex align-items-center flex-shrink-0 p-3 link-dark text-decoration-none border-bottom">
-                        <svg class="bi me-2" width="30" height="24">
-                            <use xlink:href="#bootstrap"></use>
-                        </svg>
-                        <span class="fs-5 fw-semibold textt-center">My Events</span>
-                    </a>
-                    <div id="eventList" class="list-group list-group-flush border-bottom scrollarea">
-                        <!-- Empty menu thaT will be populated by the events we create-->
-                    </div>
+                
+                <h4 class="text-center">My Events</h4>
+                <hr />
+
+                <div id="eventList" class="list-group list-group-flush border-bottom scrollarea">
+                    <!-- Empty menu thaT will be populated by the events we create-->
                 </div>
+                
 
             </div>
 
@@ -165,8 +164,8 @@
                 let data = responseData.data;
 
                 let template = `
-                    <div class="p-5 mb-4 bg-light rounded-3">
-                        <div class="container-fluid py-5">
+                    <div class="p-1 mb-1 bg-light rounded-3">
+                        <div class="container-fluid py-1">
                             <h1 class="display-5 fw-bold">${data.title}</h1>
                             <p class="col-md-8 fs-4">${data.description}</p>
                             
