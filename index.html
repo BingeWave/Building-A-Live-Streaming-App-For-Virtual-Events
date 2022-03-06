@@ -49,8 +49,8 @@
     //Replace with your authentication token to test
     const auth_token = '';
 
-    //Enter a distributor id. You can find one of yours at https://developers.bingewave.com/queries/distributors#list
-    const distributor_id = '';
+    //Enter a organizer id. You can find one of yours at https://developers.bingewave.com/queries/organizers#list
+    const organizer_id = '';
 
     var eventList = null;
 
@@ -75,7 +75,7 @@
      **/
     function getAllEvents() {
 
-        let url = 'https://bw.bingewave.com/events?distributor_id=' + distributor_id;
+        let url = 'https://bw.bingewave.com/events?organizer_id=' + organizer_id;
 
         const request = new Request(url, {
             method: 'GET',

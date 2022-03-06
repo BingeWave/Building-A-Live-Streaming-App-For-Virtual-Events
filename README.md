@@ -14,7 +14,7 @@ You may reference this repo and the tutorial at the same time  to see a working 
 To get started with this repo, please do the following:
 1. Clone to your local computer
 2. Head over to [https://developers.bingewave.com/](https://developers.bingewave.com/) and register for a distribution account if you have already.
-3. In the  index.hmtl file,  you will see two Javascript variables: auth_token and distributor_id. From the site above, copy and paste your distributor_id and auth_token into those values
+3. In the  index.hmtl file,  you will see two Javascript variables: auth_token and organizer_id. From the site above, copy and paste your organizer_id and auth_token into those values
 4. Follow the tutorial in creating a few events to test it out.
 
   
